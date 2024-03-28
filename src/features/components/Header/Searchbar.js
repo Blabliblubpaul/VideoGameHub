@@ -9,10 +9,10 @@ export default function Searchbar({}) {
         let query = document.getElementById("searchBar").value
 
         if (isStringEmpty(query)) {
-            navigate("/")
+            navigate("/search")
         }
         else {
-            navigate("/?query=" + query)
+            navigate("/search?query=" + query)
         }
     }
 

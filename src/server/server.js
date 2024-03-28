@@ -2,7 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const axios = require("axios")
-const { igdbGetGames } = require("./igdbAccess")
+const { igdbGetGames, igdbGetFullGames, igdbGetCovers } = require("./igdbAccess")
 
 const app = express()
 const port = 3001
@@ -24,14 +24,30 @@ app.listen(port, () => {
 })
 
 app.post("/igdbaccess", async (req, res) => {
-    await authorize()
-
     const { endpoint, filter } = req.body;
     console.log('Endpoint:', endpoint);
     console.log('Filter:', filter);
 
+    let fetch
+
+    switch (endpoint) {
+        case "games":
+            fetch = igdbGetGames
+            break
+
+        case "fullGames":
+            fetch = igdbGetFullGames
+            break
+
+        case "covers":
+            fetch = igdbGetCovers
+            break
+    }
+
+    await authorize()
+
     try {
-        const response = await igdbGetGames(client_id, authData.access_token, filter)
+        const response = await fetch(client_id, authData.access_token, filter)
         res.json(response)
     }
     catch (error) {
