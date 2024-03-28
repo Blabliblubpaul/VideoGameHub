@@ -8,7 +8,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" Component={Layout}>
-            <Route index element={HomePage}/>
+            <Route index Component={HomePage}/>
         </Route>
       </Routes>
     </Router>

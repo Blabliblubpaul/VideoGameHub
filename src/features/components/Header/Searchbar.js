@@ -17,7 +17,7 @@ export default function Searchbar({}) {
     }
 
     function handleEnterKey (e) {
-        if(e.key === "Enter"){
+        if(e.key === "Enter") {
             search()
         }
     }

@@ -12,7 +12,7 @@ export default function Header() {
             <div className="headermiddle" >
                 <Searchbar />
             </div>
-            <button className="headerNavButton" onClick={() => navigate("/cart")}><i className="fa fa-shopping-cart"></i></button>
+            <button className="headerNavButton"><i className="fa fa-shopping-cart"></i></button>
             <CreateThemeButton />
         </div>
     )
