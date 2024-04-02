@@ -1,4 +1,6 @@
 body {
+    width: 100%;
+
     margin: 0;
 
     background: var(--site-background-color);
@@ -6,6 +8,7 @@ body {
 
 #container {
     height: 100%;
+    width: 100%;
 
     display: grid;
     grid-template-rows: [top] 5rem auto;
@@ -27,6 +30,11 @@ body {
 
     background: var(--header-background-color);
     color: var(--text-color);
+}
+
+#headerTitle {
+    color: var(--text-color);
+    text-decoration: none;
 }
 
 .headerNavButton {
@@ -51,8 +59,6 @@ body {
 }
 
 #searchComponent {
-    width: 100%;
-
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -119,6 +125,85 @@ body {
 
 #mainbody {
     grid-area: body;
+   
+}
+
+#homePage {
+    width: 95%;
+}
+
+#homePageHeader {
+    width: fit-content;
+
+    margin-left: 2rem;
+}
+
+#categoryPreviews {
+    width: 95%;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.categoryPreview {
+    margin-bottom: 2rem;
+
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 2px solid var(--panel-background-border-1);
+
+    background: var(--panel-background-1);
+}
+
+.categoryHeader {
+    margin: 0;
+    padding: 1rem;
+}
+
+.categoryItemHeader {
+    margin: 0;
+    padding: 0;
+}
+
+.categoryItems {
+    max-width: 100vw;
+
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    border: 2px solid var(--panel-outline-color-1);
+}
+
+.categoryItem {
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    border: 1px solid var(--panel-background-border-3);
+    background: var(--panel-background-4);
+}
+
+
+#GamePageHeader {
+    text-decoration: underline;
+}
+
+#GamePageCover {
+    height: auto;
+    width: 25%;
 }
 
 :root {

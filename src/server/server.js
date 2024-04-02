@@ -2,16 +2,17 @@ const express = require("express")
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const axios = require("axios")
-const { igdbGetGames, igdbGetFullGames, igdbGetCovers } = require("./igdbAccess")
+const { igdbGetGames, igdbGetFullGames, igdbGetCovers, igdbGet } = require("./igdbAccess")
 
 const app = express()
 const port = 3001
 
 const client_id = "uqb090mlvhhwgg8r9x671t1uh45c59"
-const client_secret = "39nlisdo1d59wsw3jq7ochso5io9t1"
+const client_secret = "73boubzvqel3vo3tp7kvw7h9z0paab"
 
 let authorized = false
 let authData = null
+let authorizationTime = null
 
 app.use(cors({
     allowedHeaders: ["Content-Type"]
@@ -29,6 +30,7 @@ app.post("/igdbaccess", async (req, res) => {
     console.log('Filter:', filter);
 
     let fetch
+    let specifyEndpoint = false
 
     switch (endpoint) {
         case "games":
@@ -42,13 +44,24 @@ app.post("/igdbaccess", async (req, res) => {
         case "covers":
             fetch = igdbGetCovers
             break
+
+        default:
+            fetch = igdbGet
+            specifyEndpoint = true
+            break
     }
 
     await authorize()
 
     try {
-        const response = await fetch(client_id, authData.access_token, filter)
-        res.json(response)
+        if (specifyEndpoint) {
+            const response = await fetch(client_id, authData.access_token, endpoint, filter)
+            res.json(response)
+        }
+        else {
+            const response = await fetch(client_id, authData.access_token, filter)
+            res.json(response)
+        }
     }
     catch (error) {
         console.error("API Error: " + error.message)
@@ -56,28 +69,26 @@ app.post("/igdbaccess", async (req, res) => {
     }
 })
 
-async function igdbPost(endpoint) {
-    if (!authorized) {
-        console.log("Client not authorized. Please call authorize() first.")
-        return
-    }
-
-    const result = await axios.post("https://api.igdb.com/v4/" + endpoint, "fields *;",
-        {
-        headers: {
-            "Client-ID": client_id,
-            "Authorization": "Bearer " + authData.access_token
-        }
-    });
-
-    // console.log(result.data)
-
-    return result.data
-}
-
 async function authorize() {
     let success = false
     let result
+
+    console.log("Checking for existing authorization...")
+
+    currentTime = new Date().getTime()
+
+    // Subtract 1000 from expires_in as a small buffer
+    if (authData == null || (currentTime - authorizationTime > authData.expires_in - 1000)) {
+        console.log("No valid authoriazion found")
+    }
+    else {
+        console.log("Valid authorization found.")
+        console.log("access_token: " + authData.access_token)
+        console.log("expires_in: " + authData.expires_in)
+        console.log("token_type: " + authData.token_type)
+
+        return
+    }
 
     console.log("Trying to authorize against igdb...")
 
@@ -108,4 +119,6 @@ async function authorize() {
                 console.error("Error: " + result.status + ": " + result.message)
             }
         });
+
+    authorizationTime = new Date().getTime()
 }

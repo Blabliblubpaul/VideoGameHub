@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom"
 
 import { isStringEmpty } from "../../../app/utils";
 
-export default function Searchbar({}) {
+export default function Searchbar() {
     const navigate = useNavigate();
 
     function search() {
         let query = document.getElementById("searchBar").value
+
+        query = query.replace("&", "%amp")
 
         if (isStringEmpty(query)) {
             navigate("/search")

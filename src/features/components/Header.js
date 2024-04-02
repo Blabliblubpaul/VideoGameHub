@@ -1,14 +1,12 @@
-import { useNavigate } from "react-router-dom"
 import Searchbar from "./Header/Searchbar"
 import { useDispatch, useSelector } from "react-redux"
 import { set } from "../slices/themeSlice"
+import { Link } from "react-router-dom"
 
 export default function Header() {
-    const navigate = useNavigate()
-
     return (
         <div id="header">
-            <h1>E-Commerce</h1>
+            <Link id="headerTitle" to="/"><h1>Video Game Hub</h1></Link>
             <div className="headermiddle" >
                 <Searchbar />
             </div>
@@ -22,9 +20,9 @@ function CreateThemeButton() {
     const theme = useSelector(state => state.theme.value)
     const dispatch = useDispatch()
 
-    document.body.classList.toggle("dark-mode", theme == "dark")
+    document.body.classList.toggle("dark-mode", theme === "dark")
 
-    if (theme == "light") {
+    if (theme === "light") {
         return <button className="headerNavButton" onClick={() => dispatch(set("dark"))}><i className="fa fa-moon-o"></i></button>
     }
     else {

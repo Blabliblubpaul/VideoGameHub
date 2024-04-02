@@ -46,12 +46,20 @@ async function igdbGetCovers(client_id, access_token, filter) {
     return result.data
 }
 
-function isStringEmpty(s) {
-    return (!s || !s.trim())
+async function igdbGet(client_id, access_token, endpoint, filter) {
+    const result = await axios.post("https://api.igdb.com/v4/" + endpoint, filter, {
+        headers: {
+            "Client-ID": client_id,
+            "Authorization": "Bearer " + access_token
+        }
+    });
+
+    return result.data
 }
 
 module.exports = {
     igdbGetGames: igdbGetGames,
     igdbGetFullGames: igdbGetFullGames,
-    igdbGetCovers: igdbGetCovers
+    igdbGetCovers: igdbGetCovers,
+    igdbGet: igdbGet
 }
